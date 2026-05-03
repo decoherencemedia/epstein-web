@@ -637,8 +637,27 @@
     }
 
     /**
+     * Stub label for ``person_<n>`` rows with no display name: in-network unnamed vs sheet-unreviewed.
      * @param {string} personId
-     * @param {unknown} [facesForContext] — current photo faces (API array); used to detect Ignored-sheet people.
+     * @param {unknown} [facesForContext] — current photo faces (API array); may include ``include_in_network``.
+     */
+    function stubLabelForPersonStub(personId, facesForContext) {
+      const pid = String(personId || "").trim();
+      if (!facesForContext || !Array.isArray(facesForContext)) return "Unreviewed";
+      for (let i = 0; i < facesForContext.length; i++) {
+        const e = facesForContext[i];
+        if (!e || typeof e !== "object") continue;
+        if (String(e.person_id || "").trim() !== pid) continue;
+        if (e.include_in_network == null) continue;
+        if (Number(e.include_in_network) === 1) return "Unnamed";
+        return "Unreviewed";
+      }
+      return "Unreviewed";
+    }
+
+    /**
+     * @param {string} personId
+     * @param {unknown} [facesForContext] — current photo faces (API array); used for Ignored + stub class.
      * @param {Set<string>|null} [precomputedIgnoredSet] — if provided, avoids rescanning ``facesForContext``.
      */
     function displayNameForPersonId(personId, facesForContext, precomputedIgnoredSet) {
@@ -652,12 +671,12 @@
       if (ign && ign.has(pid)) return "Excluded";
       const selectedMatch = selected.find((p) => p.person_id === personId);
       const name = (selectedMatch && selectedMatch.name) || namesById[personId];
-      return SiteShared.personDisplayName(personId, name, "Unreviewed");
+      return SiteShared.personDisplayName(personId, name, stubLabelForPersonStub(personId, facesForContext));
     }
 
     /**
      * Tooltip for face box / label click (opens people tab for this person_id).
-     * Unreviewed stubs use raw ``person_id`` in the title so hover is not generic "Unreviewed".
+     * Unnamed / Unreviewed stubs use raw ``person_id`` in the title so hover is not a generic label.
      * @param {Set<string>|null|undefined} ignoredSet
      */
     function allPhotosFromPersonTitle(personId, ignoredSet) {
@@ -1050,7 +1069,7 @@
     /**
      * One entry per face appearance. Legacy API: `faces` is { person_id: bbox } (one bbox per id).
      * For multiple appearances of the same person, API must use an array:
-     *   [{ "person_id": "...", "face_id": "...", "left", "top", "width", "height", "ignored"?: bool }, ...]
+     *   [{ "person_id": "...", "face_id": "...", "left", "top", "width", "height", "ignored"?: bool, "include_in_network"?: number }, ...]
      * @param {unknown} faces
      * @returns {{ personId: string, key: string, ignored: boolean, box: {left:number,top:number,w:number,h:number} }[]}
      */
@@ -1600,7 +1619,7 @@
       }
 
       labelQueue.forEach(function (entry, faceIndex) {
-        const displayName = displayNameForPersonId(entry.personId, null, ignoredSet);
+        const displayName = displayNameForPersonId(entry.personId, faces, ignoredSet);
         const labelEl = entry.el;
         labelEl.textContent = displayName;
         labelEl.classList.remove("search-face-label--stacked");
