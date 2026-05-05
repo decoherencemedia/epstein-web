@@ -637,7 +637,7 @@
     }
 
     /**
-     * Stub label for ``person_<n>`` rows with no display name: in-network unnamed vs sheet-unreviewed.
+     * Stub label for ``person_<n>`` rows with no display name: in-network unknown vs sheet-unreviewed.
      * @param {string} personId
      * @param {unknown} [facesForContext] — current photo faces (API array); may include ``include_in_network``.
      */
@@ -676,7 +676,7 @@
 
     /**
      * Tooltip for face box / label click (opens people tab for this person_id).
-     * Unnamed / Unreviewed stubs use raw ``person_id`` in the title so hover is not a generic label.
+     * Unknown / Unreviewed stubs use raw ``person_id`` in the title so hover is not a generic label.
      * @param {Set<string>|null|undefined} ignoredSet
      */
     function allPhotosFromPersonTitle(personId, ignoredSet) {
