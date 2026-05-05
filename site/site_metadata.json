@@ -15,7 +15,7 @@
       "url_path": "/",
       "body_class": "page-home",
       "title": "Epstein Network",
-      "description": "Interactive network visualization of people who appear in the Epstein documents, with node and edge exploration.",
+      "description": "Explore the network of people who appear in the Epstein files and see how they're connected.",
       "og_image_filename": "home.webp",
       "og_image_alt": "Network graph of people who appear in photos from the Epstein documents"
     },
