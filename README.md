@@ -1,30 +1,41 @@
-# epstein-web
+# Epstein Web
 
-Static site for the Epstein photo network graph (D3, atlas, search, people). Lives **next to** `epstein-pipeline` and `epstein-api` under the shared **`network/`** folder.
+Static front end for [Decoherence Media](https://decoherence.media/)'s [epstein.photos](https://epstein.photos/) website.
+
+Contains pages
+- `/`: Interactive D3 network visualization
+- `/people`: Shows faces and names of all identified people
+- `/search`: Search photos by person name or document number
+- `/explore`: Groups similar photos together (UMAP dimensionality reduction of image embeddings)
+- `/about`: Describes methodology, content policy, and other details
+
+This repo is meant to sit next to `epstein-api` and `epstein-pipeline`. The pipeline writes graph JSON data files into `viz_data/` folder; the site build copies that tree into `dist/` along with assembled HTML, CSS, and JS.
+
+```text
+epstein-pipeline/     # produces viz_data/, atlas, etc.
+epstein-api/
+epstein-web/          # this repo
+    site/             # partials, page bodies, build script
+    dist/             # build output (gitignored)
+    viz_data/         # dataset and JSON files from the pipeline
+```
 
 ## Build
 
-HTML is assembled from fragments under **`site/`**:
+The build script (`./site/build.sh`) creates the static site. The primary pages (home, people, search, etc.) are assembled from shared pieces: (e.g. navigation, head, footers), plus the route-specific HTML under `site/`, and shared CSS and JavaScript. Contents of `viz_data/` (generated from running the pipeline) are copied over. The build also downloads several third-party scripts used by search, so visitors aren't depending on them at request time, and they never need to get fetched more than once.
 
-- **`site/partials/`** — shared head, nav (per route), footer, closing tags
-- **`site/pages/`** — page bodies (`home-inner.html` holds the D3 graph)
-- **`site/build.sh`** — concatenates into **`dist/`** and copies `styles.css`, `favicon.svg`, `viz_data/`, `js/`; downloads **`imagesloaded`** into **`site/js/imagesloaded.pkgd.min.js`** (gitignored, pinned URL) so the Search page script isn’t blocked on a CDN; optionally copies **`../images/atlas.webp`** (umbrella `network/images/`, same as pipeline `FACES_IMAGE_DIR`) into `dist/images/` when present (local preview only — production often loads the atlas from Spaces)
+To improve performance and SEO, static search result pages for all (sorted) length 1, 2, and 3 combinations of person_ids are generated with the `scripts/generate_static_search_pages.py` script, along with an updated sitemap. That script is called by the command `npm run build`.
 
-Generated JSON (`dataset.json`, `image_data.json`, `atlas_manifest.json`, …) is written by **`epstein-pipeline`** into **`viz_data/`** in **this** repo (`epstein_photos.config.VIZ_DATA_DIR` → `epstein-web/viz_data/`). **`site/build.sh`** copies **`viz_data/`** into **`dist/`** for preview and deploy.
-
-From **this** repo root:
-
+Building the site with a one liner (from the `dist/` folder)
 ```bash
-./site/build.sh
+cd ../ && bash site/build.sh && cd - && python3 -m http.server
 ```
 
-Preview locally (needs `viz_data/` inside `dist/` after build):
 
-```bash
-cd dist && python3 -m http.server 8000
-```
+## Cloudflare
 
-GitHub Actions (if configured) runs `./site/build.sh` and deploys **`dist/`** to GitHub Pages.
+The Cloudflare worker ensures dynamic search result pages are served correctly, and populates the og-image URL.
+
 
 ## TODO
 
