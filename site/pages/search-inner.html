@@ -649,7 +649,7 @@
         if (!e || typeof e !== "object") continue;
         if (String(e.person_id || "").trim() !== pid) continue;
         if (e.include_in_network == null) continue;
-        if (Number(e.include_in_network) === 1) return "Unnamed";
+        if (Number(e.include_in_network) === 1) return "Unknown";
         return "Unreviewed";
       }
       return "Unreviewed";
