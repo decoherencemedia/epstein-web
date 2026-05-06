@@ -1,6 +1,6 @@
 # Epstein Web
 
-Static front end for [Decoherence Media](https://decoherence.media/)'s [epstein.photos](https://epstein.photos/) website.
+Static front end for [Decoherence Media](https://decoherence.media/)'s [epstein.photos](https://epstein.photos/) project. For more information, read [our guide](https://decoherence.media/we-identified-more-than-400-people-in-photos-from-the-epstein-files/).
 
 Contains pages
 - `/`: Interactive D3 network visualization
@@ -9,7 +9,7 @@ Contains pages
 - `/explore`: Groups similar photos together (UMAP dimensionality reduction of image embeddings)
 - `/about`: Describes methodology, content policy, and other details
 
-This repo is meant to sit next to `epstein-api` and `epstein-pipeline`. The pipeline writes graph JSON data files into `viz_data/` folder; the site build copies that tree into `dist/` along with assembled HTML, CSS, and JS.
+This repo is meant to sit next to [`epstein-api`](https://github.com/decoherencemedia/epstein-api) and [`epstein-pipeline`](https://github.com/decoherencemedia/epstein-pipeline). The pipeline writes graph JSON data files into `viz_data/` folder; the site build copies that tree into `dist/` along with assembled HTML, CSS, and JS.
 
 ```text
 epstein-pipeline/     # produces viz_data/, atlas, etc.
