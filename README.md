@@ -39,5 +39,4 @@ The Cloudflare worker ensures dynamic search result pages are served correctly, 
 
 ## TODO
 
-- add fuzzy search to People page (with filters for category?)
-- fix original PDF link for non-EFTA
+- add ability to search by uploaded face (buffalo_l + vector db)
