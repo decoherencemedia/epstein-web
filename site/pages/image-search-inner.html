@@ -1,0 +1,122 @@
+<main class="site-page image-search-page" id="main">
+  <h1 class="site-page-title">Image search</h1>
+  <p class="site-page-lead">
+    Upload an image showing at least one face to find matching people in the Epstein files.
+  </p>
+
+  <section class="image-search-workspace" id="image-search-workspace" aria-label="Upload image">
+    <div class="image-search-workspace-upload">
+      <div
+        id="image-search-dropzone"
+        class="image-search-dropzone"
+        tabindex="0"
+        role="group"
+        aria-label="Upload or paste an image">
+        <img
+          class="image-search-dropzone-icon"
+          src="/images/icons/camera-icon.svg"
+          width="48"
+          height="48"
+          alt=""
+          decoding="async" />
+        <p class="image-search-dropzone-prompt">
+          Drag and drop an image here, paste from the clipboard (<kbd>Ctrl</kbd>+<kbd>V</kbd> /
+          <kbd>⌘</kbd>+<kbd>V</kbd>), or
+          <label for="image-search-file-input" class="image-search-browse-label">choose a file</label>.
+        </p>
+        <p class="image-search-dropzone-hint">JPEG, PNG, or WebP · up to 5&nbsp;MB</p>
+        <input
+          type="file"
+          id="image-search-file-input"
+          class="image-search-file-input"
+          accept="image/jpeg,image/png,image/webp,image/*"
+          hidden />
+      </div>
+
+      <div
+        id="image-search-processing"
+        class="image-search-processing"
+        hidden
+        role="status"
+        aria-live="polite"
+        aria-busy="true">
+        <div class="image-search-processing-card">
+          <img id="image-search-processing-thumb" class="image-search-processing-thumb" alt="" />
+          <span class="image-search-processing-label">Processing</span>
+          <span class="image-search-processing-spinner" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+    <aside id="image-search-workspace-panel" class="image-search-workspace-panel" hidden aria-label="Selected face">
+      <figure class="image-search-selected-wrap">
+        <img id="image-search-selected-face" class="image-search-selected-face" alt="" />
+        <button
+          type="button"
+          id="image-search-clear"
+          class="image-search-remove-btn"
+          aria-label="Remove photo">
+          <img
+            class="image-search-remove-btn-icon"
+            src="/images/icons/trash-icon.svg"
+            width="22"
+            height="22"
+            alt=""
+            decoding="async" />
+        </button>
+      </figure>
+      <div class="image-search-panel-actions">
+        <button type="button" id="image-search-submit" class="search-submit-btn" disabled>Search</button>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Full upload kept in DOM for cropping; not shown to the user. -->
+  <img
+    id="image-search-preview"
+    class="image-search-preview-source"
+    alt=""
+    hidden
+    aria-hidden="true" />
+
+  <p id="image-search-status" class="search-status" role="status" aria-live="polite" hidden></p>
+
+  <div
+    id="image-search-face-picker"
+    class="image-search-face-picker"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="image-search-face-picker-title">
+    <div class="image-search-face-picker-backdrop" aria-hidden="true"></div>
+    <div class="image-search-face-picker-card">
+      <h2 id="image-search-face-picker-title" class="image-search-face-picker-title">Which face?</h2>
+      <div class="image-search-face-picker-body">
+        <p class="image-search-face-picker-lead">
+          Multiple faces were found in the image, select the one you want to search for
+        </p>
+        <div
+          id="image-search-face-picker-grid"
+          class="image-search-face-picker-grid"
+          role="listbox"
+          aria-label="Detected faces"></div>
+        <div class="image-search-face-picker-actions">
+          <button type="button" id="image-search-face-picker-cancel" class="image-search-clear-btn">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="image-search-results" class="image-search-results" hidden aria-label="Search results">
+    <header class="image-search-results-header">
+      <h2 class="search-results-heading" id="image-search-decision-label"></h2>
+      <p class="image-search-results-detail" id="image-search-decision-detail"></p>
+    </header>
+    <ol id="image-search-candidates" class="image-search-candidates"></ol>
+  </section>
+</main>
+
+<script src="/js/shared.js"></script>
+<script src="/js/image-search.js"></script>

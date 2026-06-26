@@ -18,7 +18,7 @@ if [[ -d "$DIST" ]]; then
 fi
 
 rm -rf "$DIST"
-mkdir -p "$DIST/people" "$DIST/search" "$DIST/about" "$DIST/explore"
+mkdir -p "$DIST/people" "$DIST/search" "$DIST/image-search" "$DIST/about" "$DIST/explore"
 
 # Regenerate per-page <head> partials from site/site_metadata.json (single source
 # of truth for OG/Twitter/canonical tags shared across pages). Pure stdlib Python.
@@ -45,6 +45,14 @@ cat "$SITE/partials/head-search.html" \
   "$SITE/partials/footer.html" \
   "$DISCLAIMER" \
   "$SITE/partials/close.html" > "$DIST/search/index.html"
+
+# Image search (/image-search) — POST upload to API /search/face
+cat "$SITE/partials/head-image-search.html" \
+  "$NAV" \
+  "$SITE/pages/image-search-inner.html" \
+  "$SITE/partials/footer.html" \
+  "$DISCLAIMER" \
+  "$SITE/partials/close.html" > "$DIST/image-search/index.html"
 
 # People gallery (/people) — data from /faces API
 cat "$SITE/partials/head-people.html" \

@@ -29,6 +29,15 @@
       "og_image_alt": "Search photos from the Epstein documents by name or document ID"
     },
     {
+      "out": "head-image-search.html",
+      "url_path": "/image-search/",
+      "body_class": "page-image-search",
+      "title": "Image search · Epstein Network",
+      "description": "Upload a photo to find matching people in the Epstein documents face index.",
+      "og_image_filename": "search.webp",
+      "og_image_alt": "Upload a photo to search for matching faces in the Epstein documents"
+    },
+    {
       "out": "head-people.html",
       "url_path": "/people/",
       "body_class": "page-people",
